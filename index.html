@@ -11,253 +11,122 @@
             --secondary-color: #e0e0e0;
             --accent-color: #6a11cb;
             --accent-color-2: #2575fc;
-            
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.2);
             --glass-blur: 12px;
-            
             --shadow-color: rgba(0, 0, 0, 0.2);
             --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
-
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body {
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            color: var(--primary-color);
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            background: linear-gradient(315deg, var(--accent-color), var(--bg-color), var(--accent-color-2));
-            background-size: 200% 200%;
-            animation: gradient-animation 20s ease infinite;
-        }
-
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
+        body { font-family: var(--font-family); background-color: var(--bg-color); color: var(--primary-color); line-height: 1.6; overflow-x: hidden; position: relative; }
+        body.screen-shake { animation: screenShake 0.4s ease-in-out; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(315deg, var(--accent-color), var(--bg-color), var(--accent-color-2)); background-size: 200% 200%; animation: gradient-animation 20s ease infinite; }
+        @keyframes gradient-animation { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
-
-        .profile-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 40px 30px;
-            margin-bottom: 60px;
-            background: var(--glass-bg);
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            box-shadow: 0 8px 32px 0 var(--shadow-color);
-        }
-
+        .profile-card { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 40px 30px; margin-bottom: 60px; background: var(--glass-bg); border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 8px 32px 0 var(--shadow-color); }
         .avatar-container { position: relative; margin-bottom: 20px; display: inline-block; }
-        .profile-avatar {
-            width: 160px; height: 160px;
-            border-radius: 50%;
-            border: 4px solid var(--glass-border);
-            object-fit: cover;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            z-index: 10;
-            position: relative;
-        }
-        .hover-avatar {
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            border: 3px solid var(--glass-border);
-            object-fit: cover;
-            position: absolute;
-            top: 50%;
-            opacity: 0;
-            transform: translateY(-50%) scale(0.5);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5;
-            pointer-events: none;
-        }
+        .profile-avatar { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--glass-border); object-fit: cover; transition: transform 0.4s ease, box-shadow 0.4s ease; z-index: 10; position: relative; }
+        .hover-avatar { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--glass-border); object-fit: cover; position: absolute; top: 50%; opacity: 0; transform: translateY(-50%) scale(0.5); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 5; pointer-events: none; }
         .hover-avatar.left { left: 0; }
         .hover-avatar.right { right: 0; }
-        
-        .avatar-container.is-active .profile-avatar,
-        .avatar-container:hover .profile-avatar {
-            transform: scale(0.9) rotate(3deg);
-            box-shadow: 0 0 30px var(--accent-color-2);
-        }
-        .avatar-container.is-active .hover-avatar.left,
-        .avatar-container:hover .hover-avatar.left {
-            opacity: 1;
-            transform: translateY(-50%) translateX(-100%) scale(1) rotate(-15deg);
-        }
-        .avatar-container.is-active .hover-avatar.right,
-        .avatar-container:hover .hover-avatar.right {
-            opacity: 1;
-            transform: translateY(-50%) translateX(100%) scale(1) rotate(15deg);
-        }
-        
-        .profile-name {
-            font-size: 2.5em; font-weight: 700; margin-bottom: 5px;
-            background: linear-gradient(45deg, var(--accent-color), var(--accent-color-2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: opacity 0.5s ease-in-out;
-        }
+        .avatar-container.is-active .profile-avatar, .avatar-container:hover .profile-avatar { transform: scale(0.9) rotate(3deg); box-shadow: 0 0 30px var(--accent-color-2); }
+        .avatar-container.is-active .hover-avatar.left, .avatar-container:hover .hover-avatar.left { opacity: 1; transform: translateY(-50%) translateX(-100%) scale(1) rotate(-15deg); }
+        .avatar-container.is-active .hover-avatar.right, .avatar-container:hover .hover-avatar.right { opacity: 1; transform: translateY(-50%) translateX(100%) scale(1) rotate(15deg); }
+        .profile-name { font-size: 2.5em; font-weight: 700; margin-bottom: 5px; background: linear-gradient(45deg, var(--accent-color), var(--accent-color-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; transition: opacity 0.5s ease-in-out; }
         .profile-name.fade-out { opacity: 0; }
-
         .profile-title { font-size: 1.2em; font-weight: 300; color: var(--secondary-color); margin-bottom: 25px; max-width: 600px; }
-
         .social-links { display: flex; justify-content: center; gap: 20px; }
         .social-links a { color: var(--primary-color); transition: color 0.3s ease, transform 0.3s ease; }
         .social-links a:hover { color: var(--accent-color-2); transform: translateY(-5px); }
         .social-links svg { width: 30px; height: 30px; }
-        
-        .section {
-            padding: 40px 30px; margin-bottom: 40px;
-            background: var(--glass-bg);
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            box-shadow: 0 8px 32px 0 var(--shadow-color);
-        }
+        .section { padding: 40px 30px; margin-bottom: 40px; background: var(--glass-bg); border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 8px 32px 0 var(--shadow-color); }
         .section-title { font-size: 2em; font-weight: 700; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--accent-color-2); display: inline-block; }
         .section p { font-size: 1.1em; color: var(--secondary-color); }
-
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
         .project-card { background: rgba(0,0,0, 0.2); border-radius: 15px; padding: 25px; border: 1px solid var(--glass-border); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; overflow: hidden; position: relative; }
         .project-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(37, 117, 252, 0.2), transparent 50%); opacity: 0; transition: opacity 0.5s ease; transform: translate(0, 0); z-index: 1; }
-        
-        @media (hover: hover) and (pointer: fine) {
-            .project-card:hover { transform: translateY(-10px); box-shadow: 0 12px 40px 0 var(--shadow-color); }
-            .project-card:hover::before { opacity: 1; animation: light-sweep 2s infinite linear; }
-        }
-        
+        @media (hover: hover) and (pointer: fine) { .project-card:hover { transform: translateY(-10px); box-shadow: 0 12px 40px 0 var(--shadow-color); } .project-card:hover::before { opacity: 1; animation: light-sweep 2s infinite linear; } }
         @keyframes light-sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        
         .project-card h3, .project-card p, .project-link { position: relative; z-index: 2; }
         .project-card h3 { font-size: 1.5em; margin-bottom: 10px; color: var(--primary-color); }
         .project-card p { font-size: 1em; color: var(--secondary-color); margin-bottom: 20px; }
         .project-link { display: inline-block; text-decoration: none; color: var(--primary-color); background-color: var(--accent-color-2); padding: 8px 18px; border-radius: 25px; font-weight: 500; transition: background-color 0.3s ease, transform 0.3s ease; }
         .project-link:hover { background-color: var(--accent-color); transform: scale(1.05); }
-
-        .interests-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
-        .interest-tag { 
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1); 
-            color: var(--secondary-color); 
-            padding: 8px 15px; 
-            border-radius: 20px; 
-            font-size: 0.9em; 
-            font-weight: 500; 
-            border: 1px solid var(--glass-border); 
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
-        }
+        .interests-container { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; justify-content: center; }
+        .interest-tag { display: inline-block; background: rgba(255, 255, 255, 0.1); color: var(--secondary-color); padding: 8px 15px; border-radius: 20px; font-size: 0.9em; font-weight: 500; border: 1px solid var(--glass-border); transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; }
         .interest-tag:hover { background-color: var(--primary-color); color: var(--bg-color); transform: translateY(-3px); }
         .interests-container a { text-decoration: none; }
-        
         #easter-egg-trigger, #no-drawing-trigger { cursor: pointer; }
-        
         .footer { text-align: center; padding: 20px; margin-top: 40px; font-size: 0.9em; color: var(--secondary-color); }
         .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; animation: fadeIn 0.5s forwards; }
+        .popup-overlay.hidden { animation: fadeOut 0.5s forwards; pointer-events: none; }
+        .popup-content { position: relative; background: var(--glass-bg); border-radius: 20px; border: 1px solid var(--glass-border); box-shadow: 0 8px 32px 0 var(--shadow-color); padding: 30px; max-width: 90%; width: 500px; text-align: center; }
+        .popup-content h2 { font-size: 1.8em; margin-bottom: 15px; }
+        .popup-content p { margin-bottom: 25px; }
+        .popup-content a { color: var(--accent-color-2); font-weight: bold; text-decoration: underline; cursor: pointer; }
+        .accept-button { position: relative; cursor: pointer; display: inline-block; text-decoration: none; color: var(--primary-color); background-color: var(--accent-color-2); padding: 10px 22px; border-radius: 25px; font-weight: 500; border: none; font-family: var(--font-family); font-size: 1em; transition: top 0.3s linear, left 0.3s linear, transform 0.2s ease-out, background-color 0.2s; }
+        .accept-button:hover { background-color: var(--accent-color); transform: scale(1.05); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes screenShake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); } 20%, 40%, 60%, 80% { transform: translateX(8px); } }
         @media (max-width: 768px) {
-            .container { padding: 20px 15px; }
-            .profile-card { padding: 30px 20px; }
-            .profile-name { font-size: 2em; }
-            .profile-title { font-size: 1em; }
-            .section-title { font-size: 1.8em; }
-            .projects-grid { grid-template-columns: 1fr; }
+            .container { padding: 20px 15px; } .profile-card { padding: 30px 20px; } .profile-name { font-size: 2em; } .profile-title { font-size: 1em; }
+            .section-title { font-size: 1.8em; } .projects-grid { grid-template-columns: 1fr; }
             .avatar-container.is-active .hover-avatar.left, .avatar-container:hover .hover-avatar.left { transform: translateY(-50%) translateX(-85%) scale(1) rotate(-15deg); }
             .avatar-container.is-active .hover-avatar.right, .avatar-container:hover .hover-avatar.right { transform: translateY(-50%) translateX(85%) scale(1) rotate(15deg); }
         }
     </style>
 </head>
 <body>
-    <!-- пришел сюда за секретами? не смеши. -->
+
+    <div class="popup-overlay">
+        <div class="popup-content">
+            <h2>ВНИМАНИЕ!</h2>
+            <p>Пользуясь этим сайтом вы соглашаетесь с моими условиями использования. <a id="terms-link">Прочитайте пожалуйста</a>.</p>
+            <button class="accept-button" id="accept-button">я принимаю</button>
+        </div>
+    </div>
+
     <div class="container">
-        
         <header class="profile-card animate-on-scroll">
-            <div class="avatar-container">
-                <img src="https://cdn.discordapp.com/avatars/852545592479186964/9c2f82aa2c969532ce5849498c77beba.webp" alt="Аватар" class="profile-avatar">
-                <img src="https://media.discordapp.net/attachments/1194257890987491452/1419297029414326362/image.png?ex=68d13edd&is=68cfed5d&hm=32c155ba743ffa233f60d7ee1fbf2afaae4118765f09ef7590d8c88995d9bdd4&=" alt="Доп. фото 1" class="hover-avatar left">
-                <img src="https://media.discordapp.net/attachments/1194257890987491452/1419297206305034270/image.png?ex=68d13f07&is=68cfed87&hm=86eacad7bc534a5fd5ee3ae9163726fe9e4abda0bbb6c78964bfec4868310a24&=" alt="Доп. фото 2" class="hover-avatar right">
-            </div>
-            
+            <div class="avatar-container"><img src="https://cdn.discordapp.com/avatars/852545592479186964/9c2f82aa2c969532ce5849498c77beba.webp" alt="Аватар" class="profile-avatar"><img src="https://media.discordapp.net/attachments/1194257890987491452/1419297029414326362/image.png?ex=68d13edd&is=68cfed5d&hm=32c155ba743ffa233f60d7ee1fbf2afaae4118765f09ef7590d8c88995d9bdd4&=" alt="Доп. фото 1" class="hover-avatar left"><img src="https://media.discordapp.net/attachments/1194257890987491452/1419297206305034270/image.png?ex=68d13f07&is=68cfed87&hm=86eacad7bc534a5fd5ee3ae9163726fe9e4abda0bbb6c78964bfec4868310a24&=" alt="Доп. фото 2" class="hover-avatar right"></div>
             <h1 class="profile-name">Fonax</h1>
             <p class="profile-title">Веб-разработчик | Фотожопер |  3D-Дизайнер | Композитор | Щохмотист | Творческая личность | Ваш работник если вы не индус :)</p>
-            
-            <div class="social-links">
-                <a href="https://t.me/MrFonax" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
-                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                        <path d="M21.44,3.21l-18,6.86a2.23,2.23,0,0,0,0,4.22l5.4,1.62,1.62,5.4a2.23,2.23,0,0,0,4.22,0l6.86-18A2.23,2.23,0,0,0,21.44,3.21ZM8.56,13.75,5.34,12.5,19.22,5.54,12.5,19.22l-1.22-3.22a2.23,2.23,0,0,0-1.38-1.38Z"/>
-                    </svg>
-                </a>
-            </div>
+            <div class="social-links"><a href="https://t.me/MrFonax" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M21.44,3.21l-18,6.86a2.23,2.23,0,0,0,0,4.22l5.4,1.62,1.62,5.4a2.23,2.23,0,0,0,4.22,0l6.86-18A2.23,2.23,0,0,0,21.44,3.21ZM8.56,13.75,5.34,12.5,19.22,5.54,12.5,19.22l-1.22-3.22a2.23,2.23,0,0,0-1.38-1.38Z"/></svg></a></div>
         </header>
-
         <main>
             <section class="section animate-on-scroll">
                 <h2 class="section-title">Обо мне</h2>
                 <p>всем приве я фонакс и это мой собственный сайт сделанный мною. ниже приведены мои работы, интересы и да</p>
             </section>
-            
             <section class="section animate-on-scroll">
                 <h2 class="section-title">Мои работы</h2>
                 <div class="projects-grid">
-                    <div class="project-card" style="transition-delay: 100ms;">
-                        <h3>мысли фонакса</h3>
-                        <p>там я делюсь своими мыслями, советами и в общем веду живой дневник. а ещё там есть посхалки и загадочки так что зайти стоит, разве нет?</p>
-                        <a href="https://klyar.bearblog.dev" target="_blank" rel="noopener noreferrer" class="project-link">Почитать</a>
-                    </div>
-                    <div class="project-card" style="transition-delay: 200ms;">
-                        <h3>и всё?</h3>
-                        <p>конечно же нет! просто мне лень писать и я кушать хочу да.</p>
-                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" class="project-link">Узнать больше</a>
-                    </div>
+                    <div class="project-card" style="transition-delay: 100ms;"><h3>мысли фонакса</h3><p>там я делюсь своими мыслями, советами и в общем веду живой дневник. а ещё там есть посхалки и загадочки так что зайти стоит, разве нет?</p><a href="https://klyar.bearblog.dev" target="_blank" rel="noopener noreferrer" class="project-link">Почитать</a></div>
+                    <div class="project-card" style="transition-delay: 200ms;"><h3>и всё?</h3><p>конечно же нет! просто мне лень писать и я кушать хочу да.</p><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" class="project-link">Узнать больше</a></div>
                 </div>
             </section>
-            
             <section class="section animate-on-scroll">
                 <h2 class="section-title">Интересы и навыки</h2>
                 <div class="interests-container">
-                    <a href="https://media.discordapp.net/attachments/1194257890987491452/1419361539630174321/image.png?ex=68d17af1&is=68d02971&hm=f61dd292a132aa7bfb4d2a846cd7470b692fd1b8f3d6bffd18d45b080b79e53b&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Photoshop</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419363238868422817/figma-meme.png?ex=68d17c86&is=68d02b06&hm=460d279330170491b7faa674cd6a9d24af2e1d5ed5be550d42b75eae1fb37eec&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Figma</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419362183946567811/blender-meme-v0-71nojptr7krd1.png?ex=68d17b8b&is=68d02a0b&hm=4a28717897522ed7108e7f124bdc1cc45b420e3840093bc53d0fb29346382937&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Blender</a>
-                    <a href="https://cdn.discordapp.com/attachments/1419362071870439526/1419363585406009504/a667d7b0c9c74b62.mp3?ex=68d17cd9&is=68d02b59&hm=65a626da81b323f0f94710f3310e3395d82ef650e94dd410b6b281a781e7bc8f&=" target="_blank" rel="noopener noreferrer" class="interest-tag">FL studio</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419363880169111783/237px-Skibidi_toilet_screenshot.png?ex=68d17d1f&is=68d02b9f&hm=66c7a63a5899dae169c3590d615d6593a554aea8753de891ca113ece7d800024&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Source Filmmaker</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419370595916714156/64c7cd6f30626340.png?ex=68d18360&is=68d031e0&hm=b76b753bc6699e543b36e5c9308384dfdce092e3e23dc81125e31d0638853c0c&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Python</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419370595916714156/64c7cd6f30626340.png?ex=68d18360&is=68d031e0&hm=b76b753bc6699e543b36e5c9308384dfdce092e3e23dc81125e31d0638853c0c&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Html/Css/JavaScript</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419365335252865156/824ddf130fcdcd89.png?ex=68d17e7a&is=68d02cfa&hm=4df412c5b50bd72f73f4c59e4e9b8466f57258c206f505bbd8fe4703970bc891&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Английский Язык</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419365791677022310/38bcc6f42325638d.png?ex=68d17ee7&is=68d02d67&hm=41ba06c571f8c9d5cfcdd10c85ecd48b939a883fc157dab3472c189f003940d1&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Русский Язык</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419366409443737670/b8fd79388840c5f7.png?ex=68d17f7a&is=68d02dfa&hm=115345b78609afc23285509047140fe3e9626493f15b49518c3e2743a9c69092&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Украинский Язык</a>
+                    <a href="https://media.discordapp.net/attachments/1194257890987491452/1419361539630174321/image.png?ex=68d17af1&is=68d02971&hm=f61dd292a132aa7bfb4d2a846cd7470b692fd1b8f3d6bffd18d45b080b79e53b&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Photoshop</a><a href="https://media.discordapp.net/attachments/1419362071870439526/1419363238868422817/figma-meme.png?ex=68d17c86&is=68d02b06&hm=460d279330170491b7faa674cd6a9d24af2e1d5ed5be550d42b75eae1fb37eec&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Figma</a>
+                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419362183946567811/blender-meme-v0-71nojptr7krd1.png?ex=68d17b8b&is=68d02a0b&hm=4a28717897522ed7108e7f124bdc1cc45b420e3840093bc53d0fb29346382937&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Blender</a><a href="https://cdn.discordapp.com/attachments/1419362071870439526/1419363585406009504/a667d7b0c9c74b62.mp3?ex=68d17cd9&is=68d02b59&hm=65a626da81b323f0f94710f3310e3395d82ef650e94dd410b6b281a781e7bc8f&=" target="_blank" rel="noopener noreferrer" class="interest-tag">FL studio</a>
+                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419363880169111783/237px-Skibidi_toilet_screenshot.png?ex=68d17d1f&is=68d02b9f&hm=66c7a63a5899dae169c3590d615d6593a554aea8753de891ca113ece7d800024&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Source Filmmaker</a><a href="https://media.discordapp.net/attachments/1419362071870439526/1419370595916714156/64c7cd6f30626340.png?ex=68d18360&is=68d031e0&hm=b76b753bc6699e543b36e5c9308384dfdce092e3e23dc81125e31d0638853c0c&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Python</a>
+                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419370595916714156/64c7cd6f30626340.png?ex=68d18360&is=68d031e0&hm=b76b753bc6699e543b36e5c9308384dfdce092e3e23dc81125e31d0638853c0c&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Html/Css/JavaScript</a><a href="https://media.discordapp.net/attachments/1419362071870439526/1419365335252865156/824ddf130fcdcd89.png?ex=68d17e7a&is=68d02cfa&hm=4df412c5b50bd72f73f4c59e4e9b8466f57258c206f505bbd8fe4703970bc891&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Английский Язык</a>
+                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419365791677022310/38bcc6f42325638d.png?ex=68d17ee7&is=68d02d67&hm=41ba06c571f8c9d5cfcdd10c85ecd48b939a883fc157dab3472c189f003940d1&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Русский Язык</a><a href="https://media.discordapp.net/attachments/1419362071870439526/1419366409443737670/b8fd79388840c5f7.png?ex=68d17f7a&is=68d02dfa&hm=115345b78609afc23285509047140fe3e9626493f15b49518c3e2743a9c69092&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Украинский Язык</a>
                     <a href="https://media.discordapp.net/attachments/1419362071870439526/1419370595916714156/64c7cd6f30626340.png?ex=68d18360&is=68d031e0&hm=b76b753bc6699e543b36e5c9308384dfdce092e3e23dc81125e31d0638853c0c&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Квирилица</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419370595916714156/64c7cd6f30626340.png?ex=68d18360&is=68d031e0&hm=b76b753bc6699e543b36e5c9308384dfdce092e3e23dc81125e31d0638853c0c&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Шахматы</a>
-                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419370595916714156/64c7cd6f30626340.png?ex=68d18360&is=68d031e0&hm=b76b753bc6699e543b36e5c9308384dfdce092e3e23dc81125e31d0638853c0c&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Кляр</a>
+                    <a href="https://www.chess.com/member/fonaxchess" target="_blank" rel="noopener noreferrer" class="interest-tag">Шахматы</a>
+                    <a href="https://media.discordapp.net/attachments/1419362071870439526/1419663027950714910/image.png?ex=68d293b9&is=68d14239&hm=7832f90ebb93a09a80527e2f1e06cc252b3845477767ea8a57d75428a3c7e22d&=" target="_blank" rel="noopener noreferrer" class="interest-tag">Кляр</a>
                     <a href="https://t.me/tinycatss" target="_blank" rel="noopener noreferrer" class="interest-tag">Коты</a>
-                    <span class="interest-tag" id="no-drawing-trigger">НЕ рисование.</span>
-                    <span class="interest-tag" id="easter-egg-trigger">Артем Покаяний</span>
+                    <span class="interest-tag" id="no-drawing-trigger">НЕ рисование.</span><span class="interest-tag" id="easter-egg-trigger">Артем Покаяний</span>
                 </div>
             </section>
         </main>
-        
-        <footer class="footer animate-on-scroll">
-            <p>&copy; 2025 Fonax. Создано с любовью. В процессе ни один кот не пострадал.</p>
-        </footer>
+        <footer class="footer animate-on-scroll"><p>&copy; 2025 Fonax. Создано с любовью. В процессе ни один кот не пострадал.</p></footer>
     </div>
 
     <script>
@@ -265,116 +134,150 @@
             const animatedElements = document.querySelectorAll('.animate-on-scroll');
             if ('IntersectionObserver' in window) {
                 const observer = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                            observer.unobserve(entry.target);
-                        }
-                    });
+                    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
                 }, { threshold: 0.1 });
-                animatedElements.forEach(element => {
-                    if (element.classList.contains('project-card')) {
-                        const delay = element.style.transitionDelay || '0ms';
-                        element.style.transition = `opacity 0.6s ease-out ${delay}, transform 0.6s ease-out ${delay}`;
-                    }
-                    observer.observe(element);
-                });
-            } else {
-                animatedElements.forEach(element => element.classList.add('is-visible'));
-            }
+                animatedElements.forEach(element => { if (element.classList.contains('project-card')) { const delay = element.style.transitionDelay || '0ms'; element.style.transition = `opacity 0.6s ease-out ${delay}, transform 0.6s ease-out ${delay}`; } observer.observe(element); });
+            } else { animatedElements.forEach(element => element.classList.add('is-visible')); }
 
             const nameElement = document.querySelector('.profile-name');
             const names = ["Fonax", "MrFonax", "Игорь Владимирович", "дурачок"];
             let currentNameIndex = 0;
             setInterval(() => {
                 nameElement.classList.add('fade-out');
-                setTimeout(() => {
-                    currentNameIndex = (currentNameIndex + 1) % names.length;
-                    nameElement.textContent = names[currentNameIndex];
-                    nameElement.classList.remove('fade-out');
-                }, 500);
+                setTimeout(() => { currentNameIndex = (currentNameIndex + 1) % names.length; nameElement.textContent = names[currentNameIndex]; nameElement.classList.remove('fade-out'); }, 500);
             }, 3000);
 
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
             if (isTouchDevice) {
                 const avatarContainer = document.querySelector('.avatar-container');
                 if (avatarContainer) {
-                    avatarContainer.addEventListener('click', function(event) {
-                        this.classList.toggle('is-active');
-                    });
-                    document.addEventListener('click', function(event) {
-                        if (!avatarContainer.contains(event.target)) {
-                            avatarContainer.classList.remove('is-active');
-                        }
-                    });
+                    avatarContainer.addEventListener('click', function(event) { this.classList.toggle('is-active'); });
+                    document.addEventListener('click', function(event) { if (!avatarContainer.contains(event.target)) { avatarContainer.classList.remove('is-active'); } });
                 }
             }
-
+            // да, это исходны код
             const easterEggTrigger = document.getElementById('easter-egg-trigger');
             if (easterEggTrigger) {
-                const secretPageHTML = `
-                <!DOCTYPE html>
-                <html lang="ru">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>...</title>
-                    <link rel="preconnect" href="https://fonts.googleapis.com">
-                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                    <link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet">
-                    <style>
-                        body { background-color: #000; color: #fff; font-family: 'Tiny5', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; text-align: center; }
-                        .container { display: flex; flex-direction: column; align-items: center; }
-                        #rose-image { opacity: 0; filter: brightness(0.2); margin-bottom: 25px; animation: fadeInImage 5s forwards, flicker 4s ease-in-out 5s infinite; }
-                        .text-line { opacity: 0; font-size: 28px; color: #ccc; line-height: 1.2; margin: 3px 0; }
-                        #text1 { animation: fadeInText 4s forwards; animation-delay: 3s; }
-                        #text2 { animation: fadeInText 4s forwards; animation-delay: 6s; }
-                        @keyframes fadeInImage { from { opacity: 0; } to { opacity: 0.15; } }
-                        @keyframes flicker { 0% { filter: brightness(0.2); } 50% { filter: brightness(0.1); } 100% { filter: brightness(0.2); } }
-                        @keyframes fadeInText { from { opacity: 0; } to { opacity: 1; } }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <img id="rose-image" src="https://media.discordapp.net/attachments/1194257890987491452/1419311290144260187/latest.png?ex=68d14c25&is=68cffaa5&hm=5efcc402966c6c20b12955e904bfcaf05c70b1d1af2290ea5e8b35e1e0f399b6&=" alt="">
-                        <p class="text-line" id="text1">сколько ещё...</p>
-                        <p class="text-line" id="text2">сколько ещё ждать?...</p>
-                    </div>
-                </body>
-                </html>`;
-
-                easterEggTrigger.addEventListener('click', () => {
-                    const newWindow = window.open();
-                    newWindow.document.write(secretPageHTML);
-                    newWindow.document.close();
-                });
+                const secretPageHTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>...</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet"><style>body{background-color:#000;color:#fff;font-family:'Tiny5',monospace;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;overflow:hidden;text-align:center;padding:0 15px}.container{display:flex;flex-direction:column;align-items:center}#rose-image{max-width:90%;opacity:0;filter:brightness(.7);margin-bottom:25px;animation:fadeInImage 5s forwards,flicker 4s ease-in-out 5s infinite}#rose-image.frozen{animation:none;opacity:1;filter:none}#text-container{min-height:150px;display:flex;align-items:center;justify-content:center}#dynamic-text{font-size:28px;color:#ccc;line-height:1.2;max-width:600px;opacity:0;transition:opacity 1.5s ease-in-out}#dynamic-text.visible{opacity:1}#dynamic-text.red-text{color:#e50000}@keyframes fadeInImage{from{opacity:0}to{opacity:.5}}@keyframes flicker{0%,100%{filter:brightness(.7)}50%{filter:brightness(.5)}}</style></head><body><div class="container"><img id="rose-image" src="https://static.wikia.nocookie.net/thetekkit/images/4/4f/Rose.png/revision/latest?cb=20120814182108" alt="Таинственная роза"><div id="text-container"><p id="dynamic-text"></p></div></div><script>const sleep=e=>new Promise(t=>setTimeout(t,e));async function startSequence(){const e=document.getElementById("rose-image"),t=document.getElementById("dynamic-text"),n="https://media.discordapp.net/attachments/1419362071870439526/1419674772203376772/image_5.png?ex=68d29ea9&is=68d14d29&hm=7ecfccb6d82e250e7f51443b4120aa6135ef5ab022a86deb9986b001d38c785a&=";await sleep(4e3),t.innerText="время бежит, а ты всё ещё стоишь на месте…",t.classList.add("visible"),await sleep(5e3),t.classList.remove("visible"),await sleep(2e3),t.innerText="или тебе просто нравится думать, что ты идёшь вперёд?",t.classList.add("visible"),await sleep(7e3),t.classList.remove("visible"),await sleep(2e3),t.innerText="это произойдет. я знаю что это произойдет.",t.classList.add("visible"),await sleep(6e3),t.classList.remove("visible"),await sleep(1500),e.src=n,e.classList.add("frozen"),t.innerText="но ты боишься признать что не знаешь хорошая ли это идея, не так ли?",t.classList.add("red-text"),t.style.transition="none",t.classList.add("visible"),await sleep(5e3),window.close()}window.onload=startSequence;<\/script></body></html>`;
+                easterEggTrigger.addEventListener('click', () => { const newWindow = window.open(); newWindow.document.write(secretPageHTML); newWindow.document.close(); });
             }
 
             const noDrawingTrigger = document.getElementById('no-drawing-trigger');
             if (noDrawingTrigger) {
-                const messages = [
-                    "неа.",
-                    "нет, я не умею.",
-                    "хватит.",
-                    "я ужасно рисую.",
-                    "ну серьезно, поверь.",
-                    "ну хватит",
-                    "ну хватииит",
-                    "кто нажмет тот хейтер тимура",
-                    "...",
-                    "я разочарован."
-                ];
+                const messages = [ "неа.", "нет, я не умею.", "хватит.", "я ужасно рисую.", "ну серьезно, поверь.", "ну хватит", "ну хватииит", "кто нажмет тот хейтер тимура", "...", "я разочарован." ];
                 let clickCount = 0;
-
                 noDrawingTrigger.addEventListener('click', () => {
-                    if (clickCount < messages.length) {
-                        alert(messages[clickCount]);
-                        clickCount++;
-                    } else {
-                        window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
-                    }
+                    if (clickCount < messages.length) { alert(messages[clickCount]); clickCount++; } 
+                    else { window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank'); }
                 });
             }
+            // типо умный?
+            const popupOverlay = document.querySelector('.popup-overlay');
+            const termsLink = document.getElementById('terms-link');
+            const acceptButton = document.getElementById('accept-button');
+            
+            const chaoticTermsHTML = `<!DOCTYPE html><html><head><title>УСЛОВИЯ ИСПОЛЬЗОВАНИЯ</title><style>body{background:url('https://media.giphy.com/media/l0HlHFRbmaZtYQ0Ji/giphy.gif'),repeating-linear-gradient(45deg,#ff00ff,#00ffff 10%,#ffff00 20%);background-attachment:fixed;font-family:"Comic Sans MS",cursive,sans-serif;color:lime;text-shadow:2px 2px 0 red,-2px -2px 0 blue;margin:0;padding:0;overflow-x:hidden}.header{font-size:72px;text-align:center;animation:shake .5s infinite alternate,rainbow 3s infinite;padding:50px;font-weight:700;border:10px dashed red;background:#000;margin:20px;transform:rotate(-5deg)}.blabla-list{list-style-type:square;padding:20px;font-size:24px;line-height:2}.blabla-list li{margin:15px 0;animation:pulse 2s infinite;background:rgba(255,255,255,.1);padding:10px;border-radius:50px;border:3px dotted orange}.in-batter{font-size:120px!important;color:#fff!important;background:linear-gradient(to right,red,orange,yellow,green,blue,indigo,violet);padding:40px!important;text-align:center!important;border:20px solid #000!important;margin:50px auto!important;display:block!important;width:90%!important;text-shadow:5px 5px 0 #000,-5px -5px 0 #000;animation:spin 10s linear infinite,glow 1.5s ease-in-out infinite alternate;font-weight:900;letter-spacing:10px}@keyframes shake{0%{transform:translateX(0)}100%{transform:translateX(10px) rotate(5deg)}}@keyframes rainbow{0%{color:red}15%{color:orange}30%{color:yellow}45%{color:green}60%{color:blue}75%{color:indigo}100%{color:violet}}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05);background-color:#ff0}100%{transform:scale(1)}}@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}@keyframes glow{0%{box-shadow:0 0 10px cyan}to{box-shadow:0 0 30px magenta,0 0 50px yellow}}marquee{font-size:32px;color:red;background:#ff0;padding:10px;font-weight:700}a{color:#0f0;text-decoration:underline wavy red;font-size:48px;display:block;margin:20px auto;padding:20px;border:5px ridge pink;background:url('https://media.giphy.com/media/3o7TKsQ8UQ2iV7LbxW/giphy.gif');animation:bounce 1s infinite}@keyframes bounce{0%,to{transform:translateY(0)}50%{transform:translateY(-20px)}}.footer-ad{position:fixed;bottom:0;width:100%;background:red;color:#ff0;font-size:30px;text-align:center;padding:10px;font-weight:700;z-index:9999;animation:flash .3s infinite}@keyframes flash{0%{opacity:1}50%{opacity:.3}to{opacity:1}}body:hover .header{font-size:120px;border-width:20px}</style></head><body><div class="header">УСЛОВИЯ ИСПОЛЬЗОВАНИЯ</div><marquee scrollamount="15" direction="left"> передаю привет телеграм каналу архивчик </marquee><ul class="blabla-list"><li>БЛА БЛА БЛА БЛА БЛА БЛА БЛА БЛА</li><li>БЛА БЛА БЛА БЛА БЛА БЛА БЛА БЛА</li><li class="in-batter">В КЛЯРЕ</li><li>БЛА БЛА БЛА БЛА БЛА БЛА БЛА БЛА</li><li>БЛА!</li></ul><a href="#" onclick="alert('Ты попался! Теперь ты должен прочитать ВСЁ заново!'); return false;"> НАЖМИ МЕНЯ </a><div class="footer-ad">🔥🔥🔥 ВЫ ПРОЧИТАЛИ ЭТО ДО КОНЦА? ВЫ СУМАСШЕДШИЙ! 🔥🔥🔥</div><script>let clicks=0;document.body.addEventListener("click",function(){clicks++;if(clicks>=5){clicks=0;const e=document.createElement("li");e.className="in-batter",e.textContent="В КЛЯРЕ (СЕКРЕТНЫЙ!)",document.querySelector(".blabla-list").appendChild(e),alert("ВЫ ПОЛУЧИЛИ В КЛЯРЕ!")}});<\/script></body></html>`;
+            const rickRollUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+            let linkClicked = false;
+            let linkType = (Math.random() < 0.2) ? 'rickroll' : 'terms';
+            const taunts = ["ХА!", ">:)", "принимаю?", "ХЕХЕХЕ", "капец ты медленный"];
+
+            function hidePopup() { popupOverlay.classList.add('hidden'); }
+            
+            function runAway() {
+                if (linkClicked) return;
+                acceptButton.textContent = "НЕТ";
+                const button = acceptButton;
+                if (button.style.position !== 'fixed') {
+                    const rect = button.getBoundingClientRect();
+                    button.style.position = 'fixed';
+                    button.style.left = `${rect.left}px`;
+                    button.style.top = `${rect.top}px`;
+                    button.style.transition = 'top 0.3s linear, left 0.3s linear';
+                }
+                const newTop = Math.random() * (window.innerHeight - button.offsetHeight);
+                const newLeft = Math.random() * (window.innerWidth - button.offsetWidth);
+                button.style.top = newTop + 'px';
+                button.style.left = newLeft + 'px';
+            }
+
+            if (isTouchDevice) {
+                acceptButton.addEventListener('click', runAway);
+            } else {
+                popupOverlay.addEventListener('mousemove', (e) => {
+                    if (linkClicked) return;
+                    const buttonRect = acceptButton.getBoundingClientRect();
+                    const distance = Math.sqrt(Math.pow(e.clientX - (buttonRect.left + buttonRect.width / 2), 2) + Math.pow(e.clientY - (buttonRect.top + buttonRect.height / 2), 2));
+                    if (distance < 120) { runAway(); }
+                });
+                acceptButton.addEventListener('mouseout', () => { if (!linkClicked) acceptButton.textContent = taunts[Math.floor(Math.random() * taunts.length)]; });
+                popupOverlay.addEventListener('mouseleave', () => { if (!linkClicked) acceptButton.textContent = "я принимаю"; });
+            }
+
+            termsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (linkClicked) return;
+                linkClicked = true;
+                
+                acceptButton.style.position = 'relative';
+                acceptButton.style.top = 'auto';
+                acceptButton.style.left = 'auto';
+                
+                if (linkType === 'rickroll') {
+                    window.open(rickRollUrl, '_blank');
+                    acceptButton.textContent = "ХАХАХА";
+                } else {
+                    const newWindow = window.open();
+                    newWindow.document.write(chaoticTermsHTML);
+                    newWindow.document.close();
+                    acceptButton.textContent = "спасибо.";
+                }
+            });
+
+            acceptButton.addEventListener('click', () => {
+                if (!linkClicked) {
+                    acceptButton.textContent = ">:(";
+                    acceptButton.disabled = true;
+                    if (acceptButton.style.position !== 'fixed') {
+                        const rect = acceptButton.getBoundingClientRect();
+                        acceptButton.style.position = 'fixed';
+                        acceptButton.style.top = `${rect.top}px`;
+                        acceptButton.style.left = `${rect.left}px`;
+                    }
+                    
+                    const finalX = (Math.random() < 0.5 ? -1 : 1) * (window.innerWidth);
+                    const angle = Math.random() * 90 - 45;
+                    const windUpX = finalX > 0 ? -20 : 20;
+                    // мне лень делать посхалки за пределами сайта.
+                    const dynamicKeyframes = `@keyframes rageQuitAnimation {
+                        0%   { transform: translate(0, 0) rotate(0deg); }
+                        15%  { transform: translate(${windUpX}px, -20px) rotate(${angle/-3}deg); }
+                        40%  { transform: translateX(${finalX*0.5}px) rotate(${angle}deg); }
+                        100% { transform: translate(${finalX*1.2}px, 120vh) rotate(${angle*5}deg); opacity: 0; }
+                    }`;
+                    
+                    let styleSheet = document.createElement("style");
+                    if(document.head.querySelector('#rageQuitStyle')) {
+                        document.head.querySelector('#rageQuitStyle').remove();
+                    }
+                    styleSheet.id = 'rageQuitStyle';
+                    styleSheet.innerText = dynamicKeyframes;
+                    document.head.appendChild(styleSheet);
+                    
+                    acceptButton.style.animation = `rageQuitAnimation 1.5s forwards ease-in-out`;
+                    
+                    setTimeout(() => { document.body.classList.add('screen-shake'); }, 600);
+                    setTimeout(() => { document.body.classList.remove('screen-shake'); }, 1000);
+                    setTimeout(hidePopup, 1600);
+                } else {
+                    if (linkType === 'rickroll') {
+                        acceptButton.textContent = "ай, зачем так сильно!";
+                        setTimeout(hidePopup, 1000);
+                    } else {
+                        hidePopup();
+                    }
+                }
+            });
         });
     </script>
 </body>
