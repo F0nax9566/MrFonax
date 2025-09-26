@@ -25,7 +25,6 @@
         }
 
         .hidden { display: none !important; }
-        .invisible { opacity: 0 !important; }
 
         #mainMenu {
             display: flex;
@@ -38,7 +37,7 @@
             transition: opacity 1s ease-in-out;
             margin-bottom: 30px;
         }
-        
+
         #flowerImage { image-rendering: pixelated; }
 
         #menuButtons { display: flex; flex-direction: column; align-items: center; gap: 15px; }
@@ -85,14 +84,14 @@
         .text-content::-webkit-scrollbar { width: 10px; }
         .text-content::-webkit-scrollbar-track { background: transparent; }
         .text-content::-webkit-scrollbar-thumb { background: #fff; border: 2px solid #000; }
-        
+
         .text-content span.levitate-char { display: inline-block; opacity: 0; animation: fadeInChar 0.5s forwards, levitate 4s ease-in-out infinite; }
-        
+
         #choiceContainer { margin-top: 20px; text-align: left; padding-left: 20px; }
         .choice-button { font-size: 32px; color: #fff; cursor: pointer; margin-right: 40px; opacity: 0; transition: opacity 1s; pointer-events: none; display: inline-block; }
         .choice-button:hover { color: yellow; }
         .choice-button.shake-on-hover:hover { animation: shake 0.4s infinite; }
-        
+
         #skipButtonContainer {
             position: absolute;
             bottom: 20px;
@@ -130,7 +129,6 @@
             animation: bobbingArrow 1s ease-in-out infinite;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
         @keyframes fadeInChar { from { opacity: 0; } to { opacity: 1; } }
         @keyframes levitate { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
@@ -139,7 +137,7 @@
     </style>
 </head>
 <body>
-    
+
     <div id="mainMenu">
         <div id="flowerContainer">
             <img id="flowerImage" src="https://github.com/F0nax9566/MrFonax/blob/main/files/rose.png?raw=true" alt="">
@@ -159,7 +157,7 @@
     </div>
 
     <div id="skipButtonContainer" class="hidden"><span id="skipButton">пропустить?</span></div>
-    
+
     <div id="confirmationModal" class="modal-overlay hidden">
         <div class="dialogue-box bordered">
             <div class="scrollable-text" id="confirmationText">
@@ -188,15 +186,15 @@
         const confirmationModal = document.getElementById('confirmationModal');
         const confirmYesButton = document.getElementById('confirmYesButton');
         const confirmNoButton = document.getElementById('confirmNoButton');
-        
+
         const sndTxt1 = new Audio("https://github.com/F0nax9566/MrFonax/raw/refs/heads/main/sounds/snd_txt1.wav");
         const sndLever = new Audio("https://github.com/F0nax9566/MrFonax/raw/refs/heads/main/sounds/lever-click.wav");
         const sndDoor = new Audio("https://github.com/F0nax9566/MrFonax/raw/refs/heads/main/sounds/door.wav");
         const bgMusic = new Audio("https://github.com/F0nax9566/MrFonax/raw/refs/heads/main/sounds/Undertale%20-%20Toby%20Fox.mp3");
         bgMusic.loop = true;
-        
+
         const speakerSounds = [ new Audio("https://github.com/F0nax9566/MrFonax/raw/refs/heads/main/sounds/1.wav"), new Audio("https://github.com/F0nax9566/MrFonax/raw/refs/heads/main/sounds/3.wav") ];
-        
+
         const storyDialogues = {
             rose: ["* (Кто-то заботливо полил цветок.)", "* (Цветок пахнет очень знакомо.)"],
             speaker: [ "* Эй.. тут кто-нибудь есть?", "* ...", "* Так ты всё-таки решил прийти сюда, хм?", "* Тебе стоило поливать его чаще, он.. был на грани.", "* Но это не так важно.", "* ...", "* Хех, а ведь правду говорят...", "* От судьбы не убежишь.", "* ...", "* Ты улыбаешься?", "* Ха... ха...", "* Похоже ты не зря его растил.", "* ...", "* Мне... жаль что я так поступил с тобой.", "* Просто постарайся меньше думать об этом, окей?" ],
@@ -207,7 +205,7 @@
         const flowerClickDialogues = [ ["* (вы посмотрели на цветок.)", "* (цветок выглядит по-цветочьи)"], ["* (вы посмотрели на цветок... опять.)", "* (вам на секунду показалось что цветок покраснел)"], ["* (красивый цветок.)"], ["* (надежда.)"], ["* эй...", "* тебе.. он правда настолько нравится?"], ["* (вы посмотрели на цветок и ничего не добились.)", "* (вам кажется что стоит что-то начать делать.)"] ];
         const placeholderDialogue = [ "* извините, страница в разработке!", "* и нет, это точно не потому что фонакс наелся кляра и откинулся." ];
         const easterEggDialogue = [ "* Если ты читаешь это то ты руина.", "* Из всех возможных багов на сайте ты нашел только этот?", "* Думаешь самый умный?", "* Да, мне было легче написать диалог чем исправить этот баг, заставив кнопку пропасть во время проигрывания звука двери.", "* А теперь проваливай" ];
-        
+
         let state = {
             mode: 'menu', branch: 'start', dialogueIndex: 0, flowerClickCount: 0,
             isTyping: false, canInteract: true, typingTimeout: null, idleTimer: null, currentText: ""
@@ -241,7 +239,7 @@
             }
             typeChar();
         }
-        
+
         function skipTyping() { if (!state.isTyping) return; clearTimeout(state.typingTimeout); state.isTyping = false; state.canInteract = true; textContent.innerHTML = state.currentText; progressArrow.classList.add('arrow-bobbing'); }
         function playRandomSpeakerSound() { const sound = speakerSounds[Math.floor(Math.random() * speakerSounds.length)]; sound.currentTime = 0; sound.play(); }
         function playSndTxt1() { sndTxt1.currentTime = 0; sndTxt1.play(); }
@@ -259,14 +257,14 @@
             flowerContainer.style.opacity = 0;
             setTimeout(() => { dialogueContainer.classList.remove('hidden'); state.canInteract = true; nextStoryStep(); }, 500);
         });
-        
+
         part2Button.addEventListener('click', () => handlePlaceholderClick());
         part3Button.addEventListener('click', () => handlePlaceholderClick());
 
         function nextStoryStep() {
             if (!state.canInteract) return;
             if (state.branch !== 'choice' && state.branch !== 'finale_yes' && state.branch !== 'finale_no') { skipButtonContainer.classList.remove('hidden'); }
-            
+
             const currentBranchData = storyDialogues[state.branch];
             if (!currentBranchData || state.dialogueIndex >= currentBranchData.length) {
                 const nextBranch = { 'rose': 'speaker', 'speaker': 'choice', 'finale_yes': 'end_yes', 'finale_no': 'end_no' }[state.branch];
@@ -277,7 +275,7 @@
             typeText(text, { speed: state.branch === 'rose' ? 60 : 80, soundPlayer: state.branch === 'rose' ? playSndTxt1 : playRandomSpeakerSound });
             state.dialogueIndex++;
         }
-        
+
         function handleStoryBranchTransition() { if (state.branch === 'speaker') nextStoryStep(); if (state.branch === 'choice') { skipButtonContainer.classList.add('hidden'); runChoiceSequence();} if (state.branch === 'end_yes' || state.branch === 'end_no') window.close(); }
         function runChoiceSequence() { state.canInteract = false; sndLever.play(); dialogueContainer.classList.add('hidden'); flowerContainer.classList.remove('hidden'); setTimeout(() => { sndLever.play(); flowerContainer.style.opacity = 1; }, 500); setTimeout(() => { dialogueContainer.classList.replace('bordered', 'borderless'); dialogueContainer.classList.add('positioned-bottom'); dialogueContainer.classList.remove('hidden'); typeText(storyDialogues.choice, { speed: 100, mode: 'levitate', onComplete: showChoices }); }, 1500); }
         function showChoices() { progressArrow.classList.add('hidden'); const choices = ["Полить", "Прости"]; choices.forEach((choiceText, index) => { const button = document.createElement('span'); button.textContent = choiceText; button.className = 'choice-button'; if (choiceText === "Прости") button.classList.add('shake-on-hover'); button.onclick = (event) => { event.stopPropagation(); (choiceText === "Полить" ? handleChoiceYes() : handleChoiceNo()); }; choiceContainer.appendChild(button); setTimeout(() => { button.style.opacity = 1; button.style.pointerEvents = 'auto'; }, 500 * (index + 1)); }); state.canInteract = false; }
@@ -320,7 +318,7 @@
             }
             if (!state.canInteract) return;
             if (state.mode === 'story' && state.branch === 'choice') return;
-            
+
             if (state.mode === 'story') {
                 if (state.branch === 'speaker' && state.dialogueIndex === 2) {
                     state.canInteract = false; dialogueContainer.classList.add('hidden'); progressArrow.classList.add('hidden'); sndDoor.play();
