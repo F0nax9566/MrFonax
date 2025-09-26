@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>УСЛОВИЯ ИСПОЛЬЗОВАНИЯ</title>
+    <style>
+        body {
+            background: url('https://media.giphy.com/media/l0HlHFRbmaZtYQ0Ji/giphy.gif'), repeating-linear-gradient(45deg, #ff00ff, #00ffff 10%, #ffff00 20%);
+            background-attachment: fixed;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            color: lime;
+            text-shadow: 2px 2px 0 red, -2px -2px 0 blue;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden
+        }
+
+        .header {
+            font-size: 72px;
+            text-align: center;
+            animation: shake .5s infinite alternate, rainbow 3s infinite;
+            padding: 50px;
+            font-weight: 700;
+            border: 10px dashed red;
+            background: #000;
+            margin: 20px;
+            transform: rotate(-5deg)
+        }
+
+        .blabla-list {
+            list-style-type: square;
+            padding: 20px;
+            font-size: 24px;
+            line-height: 2
+        }
+
+        .blabla-list li {
+            margin: 15px 0;
+            animation: pulse 2s infinite;
+            background: rgba(255, 255, 255, .1);
+            padding: 10px;
+            border-radius: 50px;
+            border: 3px dotted orange
+        }
+
+        .in-batter {
+            font-size: 120px!important;
+            color: #fff!important;
+            background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+            padding: 40px!important;
+            text-align: center!important;
+            border: 20px solid #000!important;
+            margin: 50px auto!important;
+            display: block!important;
+            width: 90%!important;
+            text-shadow: 5px 5px 0 #000, -5px -5px 0 #000;
+            animation: spin 10s linear infinite, glow 1.5s ease-in-out infinite alternate;
+            font-weight: 900;
+            letter-spacing: 10px
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0)
+            }
+            100% {
+                transform: translateX(10px) rotate(5deg)
+            }
+        }
+
+        @keyframes rainbow {
+            0% {
+                color: red
+            }
+            15% {
+                color: orange
+            }
+            30% {
+                color: yellow
+            }
+            45% {
+                color: green
+            }
+            60% {
+                color: blue
+            }
+            75% {
+                color: indigo
+            }
+            100% {
+                color: violet
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1)
+            }
+            50% {
+                transform: scale(1.05);
+                background-color: #ff0
+            }
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0)
+            }
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px cyan
+            }
+            to {
+                box-shadow: 0 0 30px magenta, 0 0 50px yellow
+            }
+        }
+
+        marquee {
+            font-size: 32px;
+            color: red;
+            background: #ff0;
+            padding: 10px;
+            font-weight: 700
+        }
+
+        a {
+            color: #0f0;
+            text-decoration: underline wavy red;
+            font-size: 48px;
+            display: block;
+            margin: 20px auto;
+            padding: 20px;
+            border: 5px ridge pink;
+            background: url('https://media.giphy.com/media/3o7TKsQ8UQ2iV7LbxW/giphy.gif');
+            animation: bounce 1s infinite
+        }
+
+        @keyframes bounce {
+            0%,
+            to {
+                transform: translateY(0)
+            }
+            50% {
+                transform: translateY(-20px)
+            }
+        }
+
+        .footer-ad {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: red;
+            color: #ff0;
+            font-size: 30px;
+            text-align: center;
+            padding: 10px;
+            font-weight: 700;
+            z-index: 9999;
+            animation: flash .3s infinite
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 1
+            }
+            50% {
+                opacity: .3
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        body:hover .header {
+            font-size: 120px;
+            border-width: 20px
+        }
+    </style>
+</head>
+<body>
+    <div class="header">УСЛОВИЯ ИСПОЛЬЗОВАНИЯ</div>
+    <marquee scrollamount="15" direction="left"> передаю привет телеграм каналу архивчик </marquee>
+    <ul class="blabla-list">
+        <li>БЛА БЛА БЛА БЛА БЛА БЛА БЛА БЛА</li>
+        <li>БЛА БЛА БЛА БЛА БЛА БЛА БЛА БЛА</li>
+        <li class="in-batter">В КЛЯРЕ</li>
+        <li>БЛА БЛА БЛА БЛА БЛА БЛА БЛА БЛА</li>
+        <li>БЛА!</li>
+    </ul>
+    <a href="#" onclick="alert('Ты попался! Теперь ты должен прочитать ВСЁ заново!'); return false;"> НАЖМИ МЕНЯ </a>
+    <div class="footer-ad">🔥🔥🔥 ВЫ ПРОЧИТАЛИ ЭТО ДО КОНЦА? ВЫ СУМАСШЕДШИЙ! 🔥🔥🔥</div>
+    <script>
+        let clicks = 0;
+        document.body.addEventListener("click", function() {
+            clicks++;
+            if (clicks >= 5) {
+                clicks = 0;
+                const e = document.createElement("li");
+                e.className = "in-batter", e.textContent = "В КЛЯРЕ (СЕКРЕТНЫЙ!)", document.querySelector(".blabla-list").appendChild(e), alert("ВЫ ПОЛУЧИЛИ В КЛЯРЕ!")
+            }
+        });
+    </script>
+</body>
+</html>
