@@ -90,7 +90,19 @@
         #choiceContainer { margin-top: 20px; text-align: left; padding-left: 20px; }
         .choice-button { font-size: 32px; color: #fff; cursor: pointer; margin-right: 40px; opacity: 0; transition: opacity 1s; pointer-events: none; display: inline-block; }
         .choice-button:hover { color: yellow; }
-        .choice-button.shake-on-hover:hover { animation: shake 0.4s infinite; }
+
+        .choice-button.shake-on-hover:hover {
+            animation: tremble 1.5s ease-in-out infinite;
+        }
+
+        .positioned-bottom .text-content {
+            text-align: center;
+            padding-right: 0;
+        }
+        .positioned-bottom #choiceContainer {
+            text-align: center;
+            padding-left: 0;
+        }
 
         #skipButtonContainer {
             position: absolute;
@@ -132,7 +144,17 @@
         @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
         @keyframes fadeInChar { from { opacity: 0; } to { opacity: 1; } }
         @keyframes levitate { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); } 20%, 40%, 60%, 80% { transform: translateX(2px); } }
+
+        @keyframes tremble {
+            0%, 100% { transform: translate(0, 0) rotate(0); }
+            15% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+            30% { transform: translate(1px, -1px) rotate(0.5deg); }
+            45% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+            60% { transform: translate(1px, 1px) rotate(0.5deg); }
+            75% { transform: translate(-1px, 1px) rotate(0.5deg); }
+            90% { transform: translate(1px, -1px) rotate(-0.5deg); }
+        }
+
         @keyframes bobbingArrow { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
     </style>
 </head>
@@ -216,7 +238,11 @@
         function typeText(text, config) {
             state.isTyping = true; state.canInteract = false; state.currentText = text;
             textContent.innerHTML = ''; choiceContainer.innerHTML = ''; 
-            progressArrow.classList.remove('hidden', 'arrow-bobbing');
+
+            if (config.showArrow !== false) {
+                progressArrow.classList.remove('hidden', 'arrow-bobbing');
+            }
+
             let charIndex = 0;
             function typeChar() {
                 if (charIndex < text.length) {
@@ -232,7 +258,9 @@
                     state.typingTimeout = setTimeout(typeChar, delay);
                 } else {
                     state.isTyping = false; 
-                    progressArrow.classList.add('arrow-bobbing');
+                    if (config.showArrow !== false) {
+                       progressArrow.classList.add('arrow-bobbing');
+                    }
                     if (config.onComplete) config.onComplete();
                     else { state.canInteract = true; }
                 }
@@ -272,21 +300,59 @@
                 return;
             }
             const text = currentBranchData[state.dialogueIndex];
-            typeText(text, { speed: state.branch === 'rose' ? 60 : 80, soundPlayer: state.branch === 'rose' ? playSndTxt1 : playRandomSpeakerSound });
+            typeText(text, { speed: 50, soundPlayer: state.branch === 'rose' ? playSndTxt1 : playRandomSpeakerSound });
             state.dialogueIndex++;
         }
 
         function handleStoryBranchTransition() { if (state.branch === 'speaker') nextStoryStep(); if (state.branch === 'choice') { skipButtonContainer.classList.add('hidden'); runChoiceSequence();} if (state.branch === 'end_yes' || state.branch === 'end_no') window.close(); }
-        function runChoiceSequence() { state.canInteract = false; sndLever.play(); dialogueContainer.classList.add('hidden'); flowerContainer.classList.remove('hidden'); setTimeout(() => { sndLever.play(); flowerContainer.style.opacity = 1; }, 500); setTimeout(() => { dialogueContainer.classList.replace('bordered', 'borderless'); dialogueContainer.classList.add('positioned-bottom'); dialogueContainer.classList.remove('hidden'); typeText(storyDialogues.choice, { speed: 100, mode: 'levitate', onComplete: showChoices }); }, 1500); }
-        function showChoices() { progressArrow.classList.add('hidden'); const choices = ["Полить", "Прости"]; choices.forEach((choiceText, index) => { const button = document.createElement('span'); button.textContent = choiceText; button.className = 'choice-button'; if (choiceText === "Прости") button.classList.add('shake-on-hover'); button.onclick = (event) => { event.stopPropagation(); (choiceText === "Полить" ? handleChoiceYes() : handleChoiceNo()); }; choiceContainer.appendChild(button); setTimeout(() => { button.style.opacity = 1; button.style.pointerEvents = 'auto'; }, 500 * (index + 1)); }); state.canInteract = false; }
-        function handleChoiceYes() { state.canInteract = false; choiceContainer.innerHTML = ''; textContent.innerHTML = ''; state.branch = 'finale_yes'; dialogueContainer.classList.replace('borderless', 'bordered'); typeText(storyDialogues.finale_yes[0], { speed: 80, soundPlayer: playRandomSpeakerSound, onComplete: () => { state.canInteract = false; setTimeout(() => { flowerContainer.style.animation = 'fadeOut 2s forwards'; dialogueContainer.classList.add('hidden'); progressArrow.classList.add('hidden'); setTimeout(() => { dialogueContainer.classList.remove('hidden'); dialogueContainer.classList.remove('positioned-bottom'); state.dialogueIndex = 1; fadeOutMusic(); state.canInteract = true; nextStoryStep(); }, 3000); }, 2000); } }); }
+
+        function runChoiceSequence() {
+            state.canInteract = false; 
+            sndLever.play(); 
+            dialogueContainer.classList.add('hidden'); 
+            flowerContainer.classList.remove('hidden'); 
+            setTimeout(() => { 
+                sndLever.play(); 
+                flowerContainer.style.opacity = 1; 
+            }, 500); 
+            setTimeout(() => { 
+                dialogueContainer.classList.replace('bordered', 'borderless'); 
+                dialogueContainer.classList.add('positioned-bottom'); 
+                dialogueContainer.classList.remove('hidden'); 
+                progressArrow.classList.add('hidden');
+                typeText(storyDialogues.choice, { speed: 100, mode: 'levitate', onComplete: showChoices, showArrow: false }); 
+            }, 1500); 
+        }
+
+        function showChoices() {
+            const choices = ["Полить", "Прости"]; 
+            choices.forEach((choiceText, index) => { 
+                const button = document.createElement('span'); 
+                button.textContent = choiceText; 
+                button.className = 'choice-button'; 
+
+                button.classList.add('shake-on-hover'); 
+                button.onclick = (event) => { 
+                    event.stopPropagation(); 
+                    (choiceText === "Полить" ? handleChoiceYes() : handleChoiceNo()); 
+                }; 
+                choiceContainer.appendChild(button); 
+                setTimeout(() => { 
+                    button.style.opacity = 1; 
+                    button.style.pointerEvents = 'auto'; 
+                }, 500 * (index + 1)); 
+            }); 
+            state.canInteract = false; 
+        }
+
+        function handleChoiceYes() { state.canInteract = false; choiceContainer.innerHTML = ''; textContent.innerHTML = ''; state.branch = 'finale_yes'; dialogueContainer.classList.replace('borderless', 'bordered'); typeText(storyDialogues.finale_yes[0], { speed: 50, soundPlayer: playRandomSpeakerSound, onComplete: () => { state.canInteract = false; setTimeout(() => { flowerContainer.style.animation = 'fadeOut 2s forwards'; dialogueContainer.classList.add('hidden'); progressArrow.classList.add('hidden'); setTimeout(() => { dialogueContainer.classList.remove('hidden'); dialogueContainer.classList.remove('positioned-bottom'); state.dialogueIndex = 1; fadeOutMusic(); state.canInteract = true; nextStoryStep(); }, 3000); }, 2000); } }); }
         function handleChoiceNo() { state.canInteract = false; bgMusic.pause(); document.body.innerHTML = ''; state.branch = 'finale_no'; setTimeout(() => { document.body.appendChild(dialogueContainer); dialogueContainer.classList.replace('borderless', 'bordered'); dialogueContainer.classList.remove('positioned-bottom'); dialogueContainer.classList.remove('hidden'); state.canInteract = true; nextStoryStep(); }, 3000); }
         function fadeOutMusic() { if (bgMusic.volume > 0.1) { state.musicInterval = setInterval(() => { bgMusic.volume = Math.max(0, bgMusic.volume - 0.05); if (bgMusic.volume === 0) clearInterval(state.musicInterval); }, 200); } }
 
         flowerContainer.addEventListener('click', (event) => { if(event.target.closest("#menuButtons")) return; if (state.mode !== 'menu' || !state.canInteract) return; resetInteraction(); state.mode = 'flower_click'; state.dialogueIndex = 0; mainMenu.classList.add('hidden'); dialogueContainer.classList.remove('hidden'); nextFlowerClickStep(); });
-        function nextFlowerClickStep() { const dialogueSetIndex = Math.min(state.flowerClickCount, flowerClickDialogues.length - 1); const currentDialogueSet = flowerClickDialogues[dialogueSetIndex]; if (state.dialogueIndex >= currentDialogueSet.length) { state.flowerClickCount++; state.mode = 'menu'; dialogueContainer.classList.add('hidden'); progressArrow.classList.add('hidden'); mainMenu.classList.remove('hidden'); return; } const text = currentDialogueSet[state.dialogueIndex]; typeText(text, { speed: 80, soundPlayer: (dialogueSetIndex === 4) ? playRandomSpeakerSound : playSndTxt1 }); state.dialogueIndex++; }
+        function nextFlowerClickStep() { const dialogueSetIndex = Math.min(state.flowerClickCount, flowerClickDialogues.length - 1); const currentDialogueSet = flowerClickDialogues[dialogueSetIndex]; if (state.dialogueIndex >= currentDialogueSet.length) { state.flowerClickCount++; state.mode = 'menu'; dialogueContainer.classList.add('hidden'); progressArrow.classList.add('hidden'); mainMenu.classList.remove('hidden'); return; } const text = currentDialogueSet[state.dialogueIndex]; typeText(text, { speed: 50, soundPlayer: (dialogueSetIndex === 4) ? playRandomSpeakerSound : playSndTxt1 }); state.dialogueIndex++; }
         function handlePlaceholderClick() { if (!state.canInteract) return; resetInteraction(); state.mode = 'placeholder'; state.dialogueIndex = 0; mainMenu.classList.add('hidden'); dialogueContainer.classList.remove('hidden'); nextPlaceholderStep(); }
-        function nextPlaceholderStep() { if (state.dialogueIndex >= placeholderDialogue.length) { state.mode = 'menu'; dialogueContainer.classList.add('hidden'); progressArrow.classList.add('hidden'); mainMenu.classList.remove('hidden'); return; } const text = placeholderDialogue[state.dialogueIndex]; typeText(text, { speed: 80, soundPlayer: playRandomSpeakerSound }); state.dialogueIndex++; }
+        function nextPlaceholderStep() { if (state.dialogueIndex >= placeholderDialogue.length) { state.mode = 'menu'; dialogueContainer.classList.add('hidden'); progressArrow.classList.add('hidden'); mainMenu.classList.remove('hidden'); return; } const text = placeholderDialogue[state.dialogueIndex]; typeText(text, { speed: 50, soundPlayer: playRandomSpeakerSound }); state.dialogueIndex++; }
 
         skipButton.addEventListener('click', () => {
             if (state.mode === 'story' && !state.canInteract && doorSoundTimeout) { triggerEasterEgg(); return; }
@@ -298,7 +364,7 @@
         });
 
         function triggerEasterEgg() { clearTimeout(doorSoundTimeout); doorSoundTimeout = null; state.mode = 'easter_egg'; state.dialogueIndex = 0; confirmationModal.classList.add('hidden'); skipButtonContainer.classList.add('hidden'); dialogueContainer.classList.remove('hidden'); nextEasterEggStep(); }
-        function nextEasterEggStep() { if (state.dialogueIndex >= easterEggDialogue.length) { window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; window.close(); return; } const text = easterEggDialogue[state.dialogueIndex]; typeText(text, { speed: 80, soundPlayer: playRandomSpeakerSound }); state.dialogueIndex++; }
+        function nextEasterEggStep() { if (state.dialogueIndex >= easterEggDialogue.length) { window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; window.close(); return; } const text = easterEggDialogue[state.dialogueIndex]; typeText(text, { speed: 50, soundPlayer: playRandomSpeakerSound }); state.dialogueIndex++; }
 
         confirmYesButton.addEventListener('click', () => {
             confirmationModal.classList.add('hidden'); skipButtonContainer.classList.add('hidden'); dialogueContainer.classList.add('hidden');
